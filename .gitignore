@@ -1,0 +1,16 @@
+# Ambiente virtual
+venv/
+.venv/
+
+# Cache do Python
+__pycache__/
+*.pyc
+
+# Arquivos de configuração locais
+.env
+*.sqlite3
+
+# Dados gerados
+data/
+*.xlsx
+*.csv
