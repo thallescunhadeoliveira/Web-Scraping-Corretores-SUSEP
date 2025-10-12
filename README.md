@@ -1,19 +1,26 @@
 # 🏦 Web Scraping SUSEP - Corretores de Seguros
 
-Este projeto mostra como **coletar dados públicos de corretores cadastrados na SUSEP** usando Python e Web Scraping. É útil para análises de mercado, inteligência comercial e estudos de dados de seguros.  
+Este projeto tem como objetivo coletar e estruturar dados públicos de todos os corretores de seguros cadastrados na SUSEP (Superintendência de Seguros Privados), utilizando Python e técnicas de Web Scraping.
+
+A ferramenta automatiza o processo de consulta ao portal oficial da SUSEP — disponível em https://www2.susep.gov.br/safe/Corretores/pesquisa
+ — e extrai informações detalhadas sobre cada corretor, seja pessoa física (PF) ou pessoa jurídica (PJ).
+
+Essa base de dados tem como objetivo facilitar o acesso e a consulta de grandes volumes de informações sobre corretores, além de permitir análises de mercado que apoiem a prospecção e a compreensão do setor de corretores de seguros.
 
 ---
 
 ## 🚀 Funcionalidades
 
-- Coleta dados de **pessoas jurídicas (PJ)** cadastradas na SUSEP
+- Coleta dados de **Corretores de Seguros** cadastradas na SUSEP
 - Extrai informações como:
-  - 📇 CNPJ
-  - 🏢 Razão social
-  - 📜 Situação do cadastro
-  - 🔢 Número SUSEP do corretor
-  - 💼 Produtos autorizados
-- Consulta dados do **responsável técnico**, incluindo nome e número SUSEP
+  - 📇 CNPJ / CPF
+  - 🏢 Razão social / Nome Completo
+  - 📜 Situação do Cadastro
+  - 🔢 Número SUSEP do Corretor
+  - 💼 Produtos Autorizados
+  - 👤 Responsável Técnico
+  - 🔢 Número SUSEP do Responsável Técnico
+
 - Salva os dados incrementalmente em:
   - 📄 CSV/Excel
 
@@ -32,13 +39,17 @@ Este projeto mostra como **coletar dados públicos de corretores cadastrados na 
 
 ## ⚡ Como usar
 
-1. Clone o repositório:
-git clone https://github.com/seu-usuario/Web-Scraping-SUSEP.git
-Ative o ambiente virtual
-Execute o script:
-python extrair_corretores_susep.py
+1. Clone o repositório:<br>
+git clone https://github.com/seu-usuario/Web-Scraping-SUSEP.git<br>
+Ative o ambiente virtual<br>
 
-📁 Estrutura do Projeto
+2. Execute os scripts:<br>
+- python extrair_corretores_susep.py<br>
+- python extrair_responsavel_susep.py<br>
+
+---
+
+## 📁 Estrutura do Projeto<br>
 Web-Scraping-SUSEP/<br>
 │<br>
 ├─ code/                     # Scripts Python<br>
