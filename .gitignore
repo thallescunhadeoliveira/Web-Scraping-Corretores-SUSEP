@@ -11,6 +11,5 @@ __pycache__/
 *.sqlite3
 
 # Dados gerados
-data/
-*.xlsx
-*.csv
+data/*.xlsx
+data/*.csv
