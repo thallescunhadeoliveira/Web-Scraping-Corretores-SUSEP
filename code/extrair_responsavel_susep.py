@@ -16,7 +16,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Definições iniciais
 URL = "https://www2.susep.gov.br/safe/menumercado/certidoes/emite_certidoescorretores_2011.asp"
-timestamp_inicio = time.time()
+timestamp_inicio = datetime.fromtimestamp(time.time())
 
 def remover_acentos(texto):
     return unicodedata.normalize('NFKD', texto).encode('ASCII', 'ignore').decode('ASCII')
@@ -55,7 +55,7 @@ def extrair_dados(texto, id):
     try:      
         nome_responsaveis = []
         susep_responsaveis = []
-        texto_tabela = texto_susep.find('table').find('table').get_text().split('técnico')[1]
+        texto_tabela = texto.find('table').find('table').get_text().split('técnico')[1]
         texto_tabela = remover_acentos(texto_tabela)
 
         # Regex agora pode ser mais simples (sem letras acentuadas)
@@ -79,13 +79,13 @@ def extrair_dados(texto, id):
     return corretor_dic
 
 
-if __name__ == "__main__":  
+def main():
 
     # Lendo a lista de corretores a serem pesquisados
-    base_susep_parcial = pd.read_excel(r"../data/corretores_susep_base_parcial.csv")
+    base_susep_parcial = pd.read_csv(r"../data/corretores_susep_parcial.csv")
 
     ## Caso tenha a base_susep_completa
-    ## base_susep_completa = pd.read_excel(r"../data/corretores_susep_base_completa.csv")
+    ## base_susep_completa = pd.read_csv(r"../data/corretores_susep.csv")
 
     # Cria lista de ids de corretores
     id_corretores = base_susep_parcial['corretor_id'].to_list()
@@ -93,10 +93,8 @@ if __name__ == "__main__":
     lista_corretores = []
     i = 0
 
-    timestamp = time.time()
-    dt = datetime.fromtimestamp(timestamp)
-    data_formatada = dt.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"Iniciando: {data_formatada}")
+    print(f"Iniciando: {timestamp_inicio}")
+    print(f"Total Corretores: {total_corretores}\n")
 
     # Itera todas elementos da lista de id de corretores
     for id in id_corretores:
@@ -112,8 +110,17 @@ if __name__ == "__main__":
 
             i += 1
 
+            print(f"\n{i}")
             print(f"{(i / total_corretores) * 100:.2f}%".replace('.', ','))
-            print(i)
+            timestamp = datetime.fromtimestamp(time.time())
+            tempo_passado = timestamp - timestamp_inicio
+            progresso = i / total_corretores
+            tempo_total_estimado = tempo_passado / progresso
+            tempo_restante = tempo_total_estimado - tempo_passado
+            horario_final_estimado = timestamp + tempo_restante
+            horario_final_estimado = horario_final_estimado.strftime("%Y-%m-%d %H:%M:%S")
+            print(f"Conclusão Estimada: {horario_final_estimado}")
+
             
         except:
             pass
@@ -121,27 +128,28 @@ if __name__ == "__main__":
         if i % 40 == 0:
             df_corretores_temp = pd.DataFrame(lista_corretores)
             try:
-                timestamp = time.time()
-                dt = datetime.fromtimestamp(timestamp)
-                data_formatada = dt.strftime("%Y-%m-%d %H:%M:%S")
+                data_formatada = datetime.fromtimestamp(time.time())
                 print(f"Salvando: {data_formatada}")
 
                 df_corretores_temp = df_corretores_temp.applymap(remove_illegal_chars)
-                df_corretores_temp.to_excel("../data/validacao_corretores_temp.csv", index=False)
+                df_corretores_temp.to_csv("../data/validacao_corretores_temp.csv", index=False)
 
                 print()
             except:
                 pass
+            # Teste
+            # break
 
-    df_corretores = pd.DataFrame(lista_corretores)
-    timestamp_fim = time.time()
+    timestamp_fim = datetime.fromtimestamp(time.time())
     tempo_total = timestamp_fim - timestamp_inicio
     print(f"Tempo total de Execução: {round(tempo_total)} segundos")
 
-    timestamp = time.time()
-    dt = datetime.fromtimestamp(timestamp)
-    data_formatada = dt.strftime("%Y-%m-%d %H:%M:%S")
+    data_formatada = datetime.fromtimestamp(time.time())
     print(f"Salvando: {data_formatada}")
 
     df_corretores = df_corretores.applymap(remove_illegal_chars)
-    df_corretores.to_excel("../data/validacao_corretores_completo.csv",index=False)
+    df_corretores.to_csv("../data/validacao_corretores_completo.csv",index=False)
+
+
+if __name__ == "__main__": 
+    main()
