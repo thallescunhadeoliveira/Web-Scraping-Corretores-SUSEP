@@ -1,23 +1,22 @@
-from bs4 import BeautifulSoup
-import pandas as pd
-import numpy as np
-import time
-from datetime import datetime
-import requests
 import pprint
-import urllib3
 import re
-from openpyxl.utils.exceptions import IllegalCharacterError
+import time
 import unicodedata
+from datetime import datetime
+
+import numpy as np
+import pandas as pd
+import requests
+import urllib3
+from bs4 import BeautifulSoup
+from openpyxl.utils.exceptions import IllegalCharacterError
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# Definições iniciais
+URL = "https://www2.susep.gov.br/safe/menumercado/certidoes/emite_certidoescorretores_2011.asp"
 timestamp_inicio = time.time()
-base_susep_parcial = pd.read_excel(r"../data/corretores_susep_base_parcial.csv")
-#base_susep_completa = pd.read_excel(r"../data/corretores_susep_base_completa.csv")
-id_corretores = base_susep_parcial['corretor_id'].to_list()
-url = "https://www2.susep.gov.br/safe/menumercado/certidoes/emite_certidoescorretores_2011.asp"
-total_corretores = len(id_corretores)
 
 def remover_acentos(texto):
     return unicodedata.normalize('NFKD', texto).encode('ASCII', 'ignore').decode('ASCII')
@@ -33,7 +32,7 @@ def pesquisar_registro(id):
     params = {
         "id": id
     } 
-    response = requests.get(url, params=params, verify=False)
+    response = requests.get(URL, params=params, verify=False)
 
     # Verificando o resultado
     if response.status_code == 200:
@@ -56,9 +55,7 @@ def extrair_dados(texto, id):
     try:      
         nome_responsaveis = []
         susep_responsaveis = []
-
         texto_tabela = texto_susep.find('table').find('table').get_text().split('técnico')[1]
-
         texto_tabela = remover_acentos(texto_tabela)
 
         # Regex agora pode ser mais simples (sem letras acentuadas)
@@ -84,8 +81,16 @@ def extrair_dados(texto, id):
 
 if __name__ == "__main__":  
 
-    lista_corretores = []
+    # Lendo a lista de corretores a serem pesquisados
+    base_susep_parcial = pd.read_excel(r"../data/corretores_susep_base_parcial.csv")
 
+    ## Caso tenha a base_susep_completa
+    ## base_susep_completa = pd.read_excel(r"../data/corretores_susep_base_completa.csv")
+
+    # Cria lista de ids de corretores
+    id_corretores = base_susep_parcial['corretor_id'].to_list()
+    total_corretores = len(id_corretores)
+    lista_corretores = []
     i = 0
 
     timestamp = time.time()
@@ -99,13 +104,12 @@ if __name__ == "__main__":
         try:
             # Aplica a função de buscar os dados do corretor na susep
             texto_susep = pesquisar_registro(id)
-            # print(texto_susep)
             # Trata os valores do texto_susep
             atributos_corretor = extrair_dados(texto_susep, id)
             
             # Adiciona dicionário na lista de corretores
             lista_corretores.append(atributos_corretor)
-            
+
             i += 1
 
             print(f"{(i / total_corretores) * 100:.2f}%".replace('.', ','))
@@ -123,18 +127,16 @@ if __name__ == "__main__":
                 print(f"Salvando: {data_formatada}")
 
                 df_corretores_temp = df_corretores_temp.applymap(remove_illegal_chars)
-                df_corretores_temp.to_excel("validacao_corretores_temp.xlsx", index=False)
+                df_corretores_temp.to_excel("../data/validacao_corretores_temp.csv", index=False)
 
                 print()
             except:
                 pass
 
     df_corretores = pd.DataFrame(lista_corretores)
-
     timestamp_fim = time.time()
-
     tempo_total = timestamp_fim - timestamp_inicio
-    print(f"Tempo total de Execução do Selenium: {round(tempo_total)} segundos")
+    print(f"Tempo total de Execução: {round(tempo_total)} segundos")
 
     timestamp = time.time()
     dt = datetime.fromtimestamp(timestamp)
@@ -142,4 +144,4 @@ if __name__ == "__main__":
     print(f"Salvando: {data_formatada}")
 
     df_corretores = df_corretores.applymap(remove_illegal_chars)
-    df_corretores.to_excel("validacao_corretores_completo.xlsx",index=False)
+    df_corretores.to_excel("../data/validacao_corretores_completo.csv",index=False)
