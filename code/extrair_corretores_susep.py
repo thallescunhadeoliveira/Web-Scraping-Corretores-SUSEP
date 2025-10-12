@@ -9,8 +9,8 @@ import re
 # Configurações
 URL = "https://www2.susep.gov.br/safe/corretoresapig/dadospublicos/pesquisar"
 PARTIAL_SAVE = 40 # Salva incrementalmente a cada x requisições
-PARTIAL_OUTPUT_CSV = "data/corretores_susep_parcial.csv" 
-FINAL_OUTPUT_CSV = "data/corretores_susep.csv" 
+PARTIAL_OUTPUT_CSV = "../data/corretores_susep_parcial.csv" 
+FINAL_OUTPUT_CSV = "../data/corretores_susep.csv" 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Funções Auxiliares
@@ -127,7 +127,7 @@ def main():
             tabela_corretores_temp = tabela_corretores_temp.applymap(remove_illegal_chars)
 
             # Caso prefira salvar em .xlsx
-            #tabela_corretores_temp.to_excel('data/corretores_susep_parcial.xlsx', index = False)
+            #tabela_corretores_temp.to_excel('../data/corretores_susep_parcial.xlsx', index = False)
             tabela_corretores_temp.to_csv(PARTIAL_OUTPUT_CSV, index = False)
 
             timestamp = time.time()
@@ -151,7 +151,7 @@ def main():
     tabela_corretores = tabela_corretores.applymap(remove_illegal_chars)
 
     # Caso prefira salvar em .xlsx
-    #tabela_corretores.to_excel('data/corretores_susep.xlsx', index = False)
+    #tabela_corretores.to_excel('../data/corretores_susep.xlsx', index = False)
     tabela_corretores.to_csv(FINAL_OUTPUT_CSV, index = False)
 
     end = datetime.fromtimestamp(time.time())    

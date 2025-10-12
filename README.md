@@ -39,14 +39,14 @@ Execute o script:
 python extrair_corretores_susep.py
 
 📁 Estrutura do Projeto
-Web-Scraping-SUSEP/
-│
-├─ code/                     # Scripts Python
-├─ data/                     # Arquivos CSV/Excel
-├─ venv/                     # Ambiente virtual
-├─ .env                      # Configurações de diretórios
-├─ requirements.txt          # Dependências do projeto
-└─ README.md                 # Documentação do projeto
+Web-Scraping-SUSEP/<br>
+│<br>
+├─ code/                     # Scripts Python<br>
+├─ data/                     # Arquivos CSV/Excel<br>
+├─ venv/                     # Ambiente virtual<br>
+├─ .env                      # Configurações de diretórios<br>
+├─ requirements.txt          # Dependências do projeto<br>
+└─ README.md                 # Documentação do projeto<br>
 
 ⚖️ Licença
 Este projeto está sob a licença MIT.
