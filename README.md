@@ -40,7 +40,7 @@ Essa base de dados tem como objetivo facilitar o acesso e a consulta de grandes 
 ## ⚡ Como usar
 
 1. Clone o repositório:<br>
-git clone https://github.com/seu-usuario/Web-Scraping-SUSEP.git<br>
+git clone https://github.com/thallescunhadeoliveira/Web-Scraping-SUSEP.git<br>
 Ative o ambiente virtual<br>
 
 2. Execute os scripts:<br>
