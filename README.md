@@ -43,7 +43,9 @@ Essa base de dados tem como objetivo facilitar o acesso e a consulta de grandes 
 git clone https://github.com/thallescunhadeoliveira/Web-Scraping-SUSEP.git<br>
 Ative o ambiente virtual<br>
 
-2. Execute os scripts:<br>
+2. Crie uma pasta chamada "data"<br>
+
+3. Execute os scripts:<br>
 - python extrair_corretores_susep.py<br>
 - python extrair_responsavel_susep.py<br>
 
